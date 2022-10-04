@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.header {
+  @apply flex items-center justify-between mb-10;
+}
+
+.form {
+  @apply absolute top-10 right-10 p-5 bg-white shadow-lg rounded-lg hidden;
+}
+
+.button {
+  @apply bg-black text-white cursor-pointer py-1 px-3 rounded;
+}
+
+.progress-wrapper {
+  @apply rounded-xl bg-black p-5 mb-10;
+}
+
+.progress-header {
+  @apply text-white font-semibold mb-4 text-2xl text-center;
+}
+
+.progress-bar {
+  @apply bg-[#262923] text-center rounded-lg overflow-hidden font-semibold text-lg;
+}
+
+.progress-bar {
+  @apply transition-all duration-500;
+}
+
+.habit {
+  animation: zoomIn 0.6s;
+}
+
+.habit-header {
+  @apply flex items-center gap-4 mb-5;
+}
+
+.habit-plan {
+  @apply flex items-center justify-between;
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0.5;
+    transform: scale(0.5);
+  }
+  60% {
+    opacity: 0.8;
+    transform: scale(1.15);
+  }
+  to {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+}
