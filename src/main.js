@@ -14,16 +14,28 @@ const toggleHabit = (habitId, habitName, index) => {
     `[data-id = '${habitId}'] .habit-plan button `
   );
 
-  /*  if (elem[index].classList.contains('checked'))
-    elem[index].classList.remove('checked') && elem[index].classList.add('day-btn');
-  else elem[index].classList.add('checked');*/
+  const countDays = habits.length * 7;
+  const percentOneDay = 100 / countDays;
 
+  const progressBarElem = document.querySelector(".progress-bar > div");
+  const isChecked = elem[index].classList.contains("checked");
 
+  if (isChecked) {
+    elem[index].classList.remove("checked");
+  } else {
+    elem[index].classList.add("checked");
+  }
 
-  const progressBarElem = document.querySelector('.progress-bar > div');
-  progressBarElem.textContent = 100 + '%';
-  progressBarElem.style.width = 100 + '%';
-  
+  const currentPercent = progressBarElem.textContent.replace("%", "");
+
+  let percent = isChecked
+    ? +currentPercent - percentOneDay
+    : +currentPercent + percentOneDay;
+
+  if (percent > 98) percent = 100;
+
+  progressBarElem.textContent = percent.toFixed(0) + "%";
+  progressBarElem.style.width = percent + "%";
 
   render(
     habits.map((habit) => {
@@ -38,8 +50,8 @@ const getWeekDaysElement = (habitId, habitName, completed) =>
   weekDays
     .map((name, index) =>
       completed[index]
-        ? `<button class="bg-black rounded-full h-12 w-12 flex items-center justify-center" onclick="toggleHabit('${habitId}', '${habitName}', '${index}')"><img src="./src/images/check.svg" width="25" alt=""></button>`
-        : `<button class="  rounded-full border-2 bprder-solid border-dashed border-black opacity-50 text-lg uppercase font-semibold h-12 w-12 flex items-center justify-center" onclick="toggleHabit('${habitId}', '${habitName}', '${index}')">
+        ? `<button class="checked" onclick="toggleHabit('${habitId}', '${habitName}', '${index}')"><img src="./src/images/check.svg" width="25" alt=""></button>`
+        : `<button  onclick="toggleHabit('${habitId}', '${habitName}', '${index}')">
 ${name}</button>`
     )
     .join("");
@@ -65,3 +77,31 @@ const render = (habits) => {
 };
 
 render(habits);
+
+/*Add new habit */
+
+const openForm = () => {
+  document.querySelector(".form").classList.add("open");
+};
+
+const addNewHabit = () => {
+  const inputElem = document.querySelector(".form input");
+  const value = inputElem.value;
+  if (!value) {
+    alert("Habit name is required!");
+    return;
+  }
+
+  habits.unshift({
+    id: habits.length + 1,
+    img: "./src/images/drink.svg",
+    name: value,
+    completed: [false, false, false, false, false, false, false],
+  });
+
+  render(habits);
+
+  document.querySelector(".form").classList.remove("open");
+  inputElem.value = "";
+};
+
